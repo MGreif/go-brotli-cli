@@ -20,9 +20,9 @@ func TestDecompress(t *testing.T) {
 	defer cleanup()
 
 	err = HandleDecompress(fileIn, fileOut, &DecompressionConfig{
-		TrimLeadingZeros: true,
-		BufferSize:       4096,
-		FlushInterval:    10,
+		DontTrimZeros: false,
+		BufferSize:    4096,
+		FlushInterval: 10,
 	})
 	if err != nil {
 		t.Errorf("Could not compress file... %s\n", err)

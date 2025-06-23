@@ -11,12 +11,12 @@ import (
 )
 
 type DecompressionConfig struct {
-	Help             bool
-	InFileName       string
-	OutFileName      string
-	BufferSize       int
-	FlushInterval    int
-	TrimLeadingZeros bool
+	Help          bool
+	InFileName    string
+	OutFileName   string
+	BufferSize    int
+	FlushInterval int
+	DontTrimZeros bool
 }
 
 func (d *DecompressionConfig) SetupFlags(fs *flag.FlagSet) {
@@ -24,7 +24,7 @@ func (d *DecompressionConfig) SetupFlags(fs *flag.FlagSet) {
 	fs.StringVar(&d.OutFileName, "o", "", "The output file")
 	fs.IntVar(&d.BufferSize, "bs", 4096, "Buffer Size")
 	fs.IntVar(&d.FlushInterval, "fi", 10, "Flush Interval")
-	fs.BoolVar(&d.TrimLeadingZeros, "dont-trim-zero", true, "Dont trim zeroes at the end of the file")
+	fs.BoolVar(&d.DontTrimZeros, "dont-trim-zeros", false, "Dont trim zeroes at the end of the file")
 }
 
 func HandleDecompress(fileToDecompress *os.File, outFile *os.File, config *DecompressionConfig) error {
@@ -47,8 +47,12 @@ func HandleDecompress(fileToDecompress *os.File, outFile *os.File, config *Decom
 			return err
 		}
 
-		// Trim leading \x00
-		w.Write([]byte(strings.TrimRight(string(buffer[:b]), "\x00")))
+		if config.DontTrimZeros {
+			w.Write(buffer)
+		} else {
+			// Trim trailing \x00
+			w.Write([]byte(strings.TrimRight(string(buffer), "\x00")))
+		}
 
 		if flushCounter == flushInterval {
 			flushCounter = 0
