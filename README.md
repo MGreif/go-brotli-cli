@@ -1,6 +1,6 @@
 # A small and simple brotli CLI tool
 
-A simple CLI tool to compress and decompress files using brotli.
+A simple CLI tool to compress and decompress files using [brotli](https://github.com/google/brotli).
 This projects builds upon [Andybalholm's brotli library](https://github.com/andybalholm/brotli).
 
 
