@@ -4,7 +4,7 @@ import (
 	"bufio"
 	"flag"
 	"fmt"
-	"os"
+	"io"
 	"strings"
 
 	"github.com/andybalholm/brotli"
@@ -20,18 +20,18 @@ type DecompressionConfig struct {
 }
 
 func (d *DecompressionConfig) SetupFlags(fs *flag.FlagSet) {
-	fs.StringVar(&d.InFileName, "i", "", "Target file")
-	fs.StringVar(&d.OutFileName, "o", "", "Output file")
+	fs.StringVar(&d.InFileName, "i", "", "Input file (default stdin)")
+	fs.StringVar(&d.OutFileName, "o", "", "Output file (default stdout)")
 	fs.IntVar(&d.BufferSize, "bs", 4096, "Buffer Size")
 	fs.IntVar(&d.FlushInterval, "fi", 10, "Flush Interval")
 	fs.BoolVar(&d.DontTrimZeros, "dont-trim-zeros", false, "Dont trim zeroes at the end of the file")
 }
 
-func HandleDecompress(fileToDecompress *os.File, outFile *os.File, config *DecompressionConfig) error {
-	r := brotli.NewReader(fileToDecompress)
+func HandleDecompress(toDecompress io.Reader, out io.Writer, config *DecompressionConfig) error {
+	r := brotli.NewReader(toDecompress)
 	bufferSize := config.BufferSize
 
-	w := bufio.NewWriterSize(outFile, bufferSize)
+	w := bufio.NewWriterSize(out, bufferSize)
 
 	var buffer = make([]byte, bufferSize)
 

@@ -1,7 +1,17 @@
 # A small and simple brotli CLI tool
 
-A simple CLI tool to compress and decompress files using [brotli](https://github.com/google/brotli).
+A simple CLI tool to compress and decompress data using [brotli](https://github.com/google/brotli).
 This projects builds upon [Andybalholm's brotli library](https://github.com/andybalholm/brotli).
+
+## Features
+
+Take input from:
+- Stdin
+- A file (`-i`)
+
+Put output to:
+- Stdout
+- A file (`-o`)
 
 
 ## Usage
@@ -12,8 +22,8 @@ This projects builds upon [Andybalholm's brotli library](https://github.com/andy
 Usage:
         ./build/brotli-cli {compress,decompress}
 Actions:
-        compress # Compresses the given file
-        decompress # Decompresses the given file
+        compress # Compresses the given input
+        decompress # Decompresses the given input
 Options:
   -h    Print help
 ```
@@ -27,9 +37,9 @@ Usage:
   -fi int
         Flush Interval (default 10)
   -i string
-        Target file
+        Input file (default stdin)
   -o string
-        Output file
+        Output file (default stdout)
 ```
 
 ### `./brotli-cli decompress -h`
@@ -43,21 +53,26 @@ Usage:
   -fi int
         Flush Interval (default 10)
   -i string
-        Target file
+        Input file (default stdin)
   -o string
-        Output file
+        Output file (default stdout)
 ```
 
 ### `./brotli-cli compress -i file.html -o file.br`
-
-```
-Start compressing file.html
-Successfully compressed file.html to file.br
-```
-
 ### `./brotli-cli decompress -i file.br -o file.html`
 
+### `echo "<title>Fancy Page</title>" | ./brotli-cli compress -o out.br`
+
+
+### `echo "<title>Fancy Page</title>" | ./brotli-cli compress | xxd`
+
 ```
-Start decompressing file.br
-Successfully decompressed file.br to file.html
+00000000: 8bff 07f8 8f94 aced 9112 c028 2cc7 dcf2  ...........(,...
+00000010: ba90 4354 794c 23b0 c125 04c1 3a4f 60ff  ..CTyL#..%..:O`.
+00000020: 3c00 8001                                <...
+```
+
+### `echo "<title>Fancy Page</title>" | ./brotli-cli compress | ./brotli-cli decompress`
+```
+<title>Fancy Page</title>
 ```

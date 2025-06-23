@@ -3,7 +3,7 @@ package internal
 import (
 	"flag"
 	"fmt"
-	"os"
+	"io"
 
 	"github.com/andybalholm/brotli"
 )
@@ -17,14 +17,14 @@ type CompressionConfig struct {
 }
 
 func (c *CompressionConfig) SetupFlags(fs *flag.FlagSet) {
-	fs.StringVar(&c.InFileName, "i", "", "Target file")
-	fs.StringVar(&c.OutFileName, "o", "", "Output file")
+	fs.StringVar(&c.InFileName, "i", "", "Input file (default stdin)")
+	fs.StringVar(&c.OutFileName, "o", "", "Output file (default stdout)")
 	fs.IntVar(&c.BufferSize, "bs", 4096, "Buffer Size")
 	fs.IntVar(&c.FlushInterval, "fi", 10, "Flush Interval")
 }
 
-func HandleCompress(fileToCompress *os.File, outFile *os.File, config *CompressionConfig) error {
-	w := brotli.NewWriterLevel(outFile, brotli.BestCompression)
+func HandleCompress(toCompress io.Reader, out io.Writer, config *CompressionConfig) error {
+	w := brotli.NewWriterLevel(out, brotli.BestCompression)
 
 	bufferSize := config.BufferSize
 
@@ -33,7 +33,7 @@ func HandleCompress(fileToCompress *os.File, outFile *os.File, config *Compressi
 	flushInterval := config.FlushInterval
 	flushCounter := 0
 	for {
-		b, err := fileToCompress.Read(buffer)
+		b, err := toCompress.Read(buffer)
 		if b == 0 {
 			// End
 			break

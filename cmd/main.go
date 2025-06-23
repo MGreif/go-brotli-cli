@@ -48,31 +48,6 @@ var (
 	fsDecompression     *flag.FlagSet                 = flag.NewFlagSet("", flag.ExitOnError)
 )
 
-func prepareFiles(inFileName string, outFileName string) (*os.File, *os.File, error) {
-
-	if inFileName == "" || outFileName == "" {
-		flag.Usage()
-		return nil, nil, fmt.Errorf("Please specify input and output file names")
-	}
-
-	fileIn, err := os.Open(inFileName)
-
-	if err != nil {
-		return nil, nil, fmt.Errorf("Could not open %s. Err: %s\n", inFileName, err)
-	}
-
-	_, err = os.Stat(outFileName)
-	if err == nil {
-		return nil, nil, fmt.Errorf("File %s already exists. Exiting...\n", outFileName)
-	}
-
-	fileOut, err := os.Create(outFileName)
-	if err != nil {
-		return nil, nil, fmt.Errorf("Could not create %s. Err: %s\n", outFileName, err)
-	}
-	return fileIn, fileOut, nil
-}
-
 func main() {
 	setupGlobalFlags()
 
