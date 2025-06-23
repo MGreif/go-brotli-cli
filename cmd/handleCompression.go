@@ -23,7 +23,7 @@ func handleCompression() error {
 		return fmt.Errorf("Could not prepare files: %s\n", err)
 	}
 
-	fmt.Printf("Start decompressing %s\n", compressionConfig.OutFileName)
+	fmt.Printf("Start compressing %s\n", compressionConfig.OutFileName)
 	err = internal.HandleCompress(fileIn, fileOut, compressionConfig)
 	if err != nil {
 		fmt.Printf("Could not compress %s. Error: %s\n", compressionConfig.InFileName, err)
