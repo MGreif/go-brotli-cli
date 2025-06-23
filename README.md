@@ -1,18 +1,8 @@
 # A small and simple brotli CLI tool
 
-A CLI tool to compress and decompress brotli files.
+A CLI tool to list, compress and decompress files using brotli.
 This projects builds upon [Andybalholm's brotli library](https://github.com/andybalholm/brotli).
 
-
-## Features
-
-### Compression
-
-Compress a file using google's [brotli](https://github.com/google/brotli) lossless compression algorithm.
-
-### Decompression
-
-Decompress a file compressed with google's [brotli](https://github.com/google/brotli) lossless compression algorithm.
 
 ## Usage
 
