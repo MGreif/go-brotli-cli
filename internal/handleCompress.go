@@ -17,8 +17,8 @@ type CompressionConfig struct {
 }
 
 func (c *CompressionConfig) SetupFlags(fs *flag.FlagSet) {
-	fs.StringVar(&c.InFileName, "i", "", "The target file")
-	fs.StringVar(&c.OutFileName, "o", "", "The output file")
+	fs.StringVar(&c.InFileName, "i", "", "Target file")
+	fs.StringVar(&c.OutFileName, "o", "", "Output file")
 	fs.IntVar(&c.BufferSize, "bs", 4096, "Buffer Size")
 	fs.IntVar(&c.FlushInterval, "fi", 10, "Flush Interval")
 }

@@ -20,8 +20,8 @@ type DecompressionConfig struct {
 }
 
 func (d *DecompressionConfig) SetupFlags(fs *flag.FlagSet) {
-	fs.StringVar(&d.InFileName, "i", "", "The target file")
-	fs.StringVar(&d.OutFileName, "o", "", "The output file")
+	fs.StringVar(&d.InFileName, "i", "", "Target file")
+	fs.StringVar(&d.OutFileName, "o", "", "Output file")
 	fs.IntVar(&d.BufferSize, "bs", 4096, "Buffer Size")
 	fs.IntVar(&d.FlushInterval, "fi", 10, "Flush Interval")
 	fs.BoolVar(&d.DontTrimZeros, "dont-trim-zeros", false, "Dont trim zeroes at the end of the file")
